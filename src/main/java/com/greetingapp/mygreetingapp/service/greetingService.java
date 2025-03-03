@@ -17,26 +17,9 @@ public class greetingService {
         this.gsr = gsr;
     }
 
-    public String getPersonalizedGreeting(String firstName, String lastName) {
-        String message;
-        if (firstName != null && lastName != null) {
-            message = "Hello, " + firstName + " " + lastName + "!";
-        } else if (firstName != null) {
-            message = "Hello, " + firstName + "!";
-        } else if (lastName != null) {
-            message = "Hello, " + lastName + "!";
-        } else {
-            message = "Hello World!";
-        }
-
-        greetingEntity greeting = new greetingEntity(message);
-        gsr.save(greeting);
-
-        return message;
-    }
-
     public greetingEntity saveGreeting(String message) {
-        greetingEntity greeting = new greetingEntity(message);
+        greetingEntity greeting = new greetingEntity();
+        greeting.setMessage(message);
         return gsr.save(greeting);
     }
 
@@ -46,5 +29,21 @@ public class greetingService {
 
     public List<greetingEntity> getAllGreetings() {
         return gsr.findAll();
+    }
+
+    public String getPersonalizedGreeting(String firstName, String lastName) {
+        if (firstName == null && lastName == null) {
+            return "Hello, Guest!";
+        }
+        return "Hello, " + (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "") + "!";
+    }
+
+    public greetingEntity updateGreeting(Long id, String newMessage) {
+        return gsr.findById(id)
+                .map(greeting -> {
+                    greeting.setMessage(newMessage);
+                    return gsr.save(greeting);
+                })
+                .orElseThrow(() -> new RuntimeException("Greeting not found with ID: " + id));
     }
 }

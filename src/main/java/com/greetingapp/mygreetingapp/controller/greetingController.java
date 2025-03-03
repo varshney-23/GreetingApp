@@ -39,4 +39,9 @@ public class greetingController {
                                           @RequestParam(required = false) String lastName) {
         return gs.getPersonalizedGreeting(firstName, lastName);
     }
+
+    @PutMapping("/{id}")
+    public greetingEntity updateGreeting(@PathVariable Long id, @RequestParam String newMessage) {
+        return gs.updateGreeting(id, newMessage);
+    }
 }
