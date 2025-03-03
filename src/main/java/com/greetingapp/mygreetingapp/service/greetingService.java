@@ -4,6 +4,8 @@ import com.greetingapp.mygreetingapp.model.greetingEntity;
 import com.greetingapp.mygreetingapp.repository.greetingRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class greetingService {
 
@@ -29,5 +31,9 @@ public class greetingService {
         gsr.save(greeting);
 
         return message;
+    }
+
+    public Optional<greetingEntity> getGreetingById(Long id) {
+        return gsr.findById(id);
     }
 }
