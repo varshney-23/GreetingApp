@@ -1,18 +1,33 @@
 package com.greetingapp.mygreetingapp.service;
 
+import com.greetingapp.mygreetingapp.model.greetingEntity;
+import com.greetingapp.mygreetingapp.repository.greetingRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class greetingService {
+
+    private static greetingRepository gsr;
+
+    public greetingService(greetingRepository gsr) {
+        this.gsr = gsr;
+    }
+
     public static String getPersonalizedGreeting(String firstName, String lastName) {
+        String message;
         if (firstName != null && lastName != null) {
-            return "Hello, " + firstName + " " + lastName + "!";
+            message = "Hello, " + firstName + " " + lastName + "!";
         } else if (firstName != null) {
-            return "Hello, " + firstName + "!";
+            message = "Hello, " + firstName + "!";
         } else if (lastName != null) {
-            return "Hello, " + lastName + "!";
+            message = "Hello, " + lastName + "!";
         } else {
-            return "Hello World!";
+            message = "Hello World!";
         }
+
+        greetingEntity greeting = new greetingEntity(message);
+        gsr.save(greeting);
+
+        return message;
     }
 }
