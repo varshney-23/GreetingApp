@@ -3,6 +3,7 @@ package com.greetingapp.mygreetingapp.controller;
 import com.greetingapp.mygreetingapp.model.greetingEntity;
 import com.greetingapp.mygreetingapp.service.greetingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,5 +44,11 @@ public class greetingController {
     @PutMapping("/{id}")
     public greetingEntity updateGreeting(@PathVariable Long id, @RequestParam String newMessage) {
         return gs.updateGreeting(id, newMessage);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteGreeting(@PathVariable Long id) {
+        gs.deleteGreeting(id);
+        return ResponseEntity.ok("Greeting deleted successfully!");
     }
 }
