@@ -4,10 +4,10 @@ package com.greetingapp.mygreetingapp.controller;
 import com.greetingapp.mygreetingapp.dto.authUserDTO;
 import com.greetingapp.mygreetingapp.dto.loginDTO;
 import com.greetingapp.mygreetingapp.dto.responseDTO;
-import com.greetingapp.mygreetingapp.model.User;
 import com.greetingapp.mygreetingapp.service.authService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
