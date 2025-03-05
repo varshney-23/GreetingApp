@@ -2,6 +2,7 @@ package com.greetingapp.mygreetingapp.controller;
 
 
 import com.greetingapp.mygreetingapp.dto.authUserDTO;
+import com.greetingapp.mygreetingapp.dto.loginDTO;
 import com.greetingapp.mygreetingapp.dto.responseDTO;
 import com.greetingapp.mygreetingapp.model.User;
 import com.greetingapp.mygreetingapp.service.authService;
@@ -20,7 +21,7 @@ public class authController {
 
     @PostMapping("/register")
     public ResponseEntity<responseDTO> register(@Valid @RequestBody authUserDTO userDTO) throws Exception{
-        User user = new User();
+        authUserDTO user = new authUserDTO();
         user.setEmail(userDTO.getEmail());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
@@ -31,4 +32,12 @@ public class authController {
 
         return new ResponseEntity<>(responseUserDTO, HttpStatus.CREATED);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<responseDTO> login(@Valid @RequestBody loginDTO loginDTO){
+        String result=authenticationService.login(loginDTO);
+        responseDTO responseUserDTO=new responseDTO("Login successfully!!",result);
+        return  new ResponseEntity<>(responseUserDTO,HttpStatus.OK);
+    }
+
 }
