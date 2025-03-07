@@ -66,4 +66,21 @@ public class AuthenticationService implements IAuthenticationService {
             throw new UserException("Sorry! Email or Password is incorrect!");
         }
     }
+    @Override
+    public String forgotPassword(String email, String newPassword) {
+        AuthUser user = authUserRepository.findByEmail(email);
+        if (user == null) {
+            throw new UserException("Sorry! We cannot find the user email: " + email);
+        }
+        String encryptedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encryptedPassword);
+
+        authUserRepository.save(user);
+
+        emailSenderService.sendEmail(user.getEmail(),
+                "Password Reset Successful",
+                "Hi " + user.getFirstName() + ",\n\nYour password has been successfully changed!");
+
+        return "Password has been changed successfully!";
+    }
 }

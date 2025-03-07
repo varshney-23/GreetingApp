@@ -1,6 +1,7 @@
 package com.greetingapp.mygreetingapp.controller;
 
 import com.greetingapp.mygreetingapp.dto.AuthUserDTO;
+import com.greetingapp.mygreetingapp.dto.ForgetPassword;
 import com.greetingapp.mygreetingapp.dto.LoginDTO;
 import com.greetingapp.mygreetingapp.dto.ResponseDTO;
 import com.greetingapp.mygreetingapp.model.AuthUser;
@@ -9,10 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,4 +31,13 @@ public class AuthUserController {
         ResponseDTO responseUserDTO=new ResponseDTO("Login successfully!!",result);
         return  new ResponseEntity<>(responseUserDTO,HttpStatus.OK);
     }
+
+    @PutMapping("/auth/forgotPassword/{email}")
+    public ResponseEntity<ResponseDTO> forgotPassword(@PathVariable String email,
+                                                      @Valid @RequestBody ForgetPassword forgotPasswordDTO) {
+        String responseMessage = authenticationService.forgotPassword(email, forgotPasswordDTO.getPassword());
+        ResponseDTO responseDTO = new ResponseDTO(responseMessage, null);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
 }
