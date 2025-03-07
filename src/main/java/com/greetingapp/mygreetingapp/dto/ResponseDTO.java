@@ -1,6 +1,5 @@
 package com.greetingapp.mygreetingapp.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class responseDTO {
+public class ResponseDTO {
     private String message;
     private Object object;
 }

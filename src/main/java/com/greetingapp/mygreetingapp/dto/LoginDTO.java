@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class loginDTO {
+public class LoginDTO {
 
     @NotNull(message = "Email is required")
     @Email(message = "Enter a valid email")

@@ -1,28 +1,27 @@
 package com.greetingapp.mygreetingapp.service;
 
-import com.greetingapp.mygreetingapp.dto.authUserDTO;
-import com.greetingapp.mygreetingapp.dto.loginDTO;
-import com.greetingapp.mygreetingapp.exception.userException;
-import com.greetingapp.mygreetingapp.interfaces.IAuthService;
-import com.greetingapp.mygreetingapp.repository.userRepository;
+import com.greetingapp.mygreetingapp.dto.AuthUserDTO;
+import com.greetingapp.mygreetingapp.dto.LoginDTO;
+import com.greetingapp.mygreetingapp.exception.UserException;
+import com.greetingapp.mygreetingapp.interfaces.IAuthenticationService;
+import com.greetingapp.mygreetingapp.model.AuthUser;
+import com.greetingapp.mygreetingapp.repository.AuthUserRepository;
 import com.greetingapp.mygreetingapp.util.EmailSenderService;
-import com.greetingapp.mygreetingapp.util.jwttoken;
-
-
-import org.apache.el.stream.Optional;
+import com.greetingapp.mygreetingapp.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
-public class authService implements IAuthService{
+public class AuthenticationService implements IAuthenticationService {
 
     @Autowired
-    userRepository authUserRepository;
+    AuthUserRepository authUserRepository;
 
     @Autowired
-    jwttoken tokenUtil;
+    JwtToken tokenUtil;
 
     @Autowired
     EmailSenderService emailSenderService;
@@ -30,8 +29,8 @@ public class authService implements IAuthService{
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public User register(authUserDTO userDTO) throws Exception {
-        User user = new authUser(userDTO);
+    public AuthUser register(AuthUserDTO userDTO) throws Exception {
+        AuthUser user = new AuthUser(userDTO);
 
         String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
         user.setPassword(encryptedPassword);
@@ -49,23 +48,22 @@ public class authService implements IAuthService{
         return user;
     }
 
-
-
     @Override
-    public String login(loginDTO logDTO) {
-        Optional<User> user = Optional.ofNullable(authUserRepository.findByEmail(logDTO.getEmail()));
+    public String login(LoginDTO loginDTO) {
+        Optional<AuthUser> user = Optional.ofNullable(authUserRepository.findByEmail(loginDTO.getEmail()));
 
         if (user.isPresent()) {
+            // Check if the password matches the encrypted password
             if (passwordEncoder.matches(loginDTO.getPassword(), user.get().getPassword())) {
                 emailSenderService.sendEmail(user.get().getEmail(), "Logged in Successfully!", "Hi "
                         + user.get().getFirstName() + ",\n\nYou have successfully logged in into Greeting App!");
 
                 return "Congratulations!! You have logged in successfully!";
             } else {
-                throw new userException("Sorry! Email or Password is incorrect!");
+                throw new UserException("Sorry! Email or Password is incorrect!");
             }
         } else {
-            throw new userException("Sorry! Email or Password is incorrect!");
+            throw new UserException("Sorry! Email or Password is incorrect!");
         }
     }
 }

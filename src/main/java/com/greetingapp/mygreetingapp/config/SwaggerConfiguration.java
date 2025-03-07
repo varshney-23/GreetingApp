@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class swaggerConfig {
+public class SwaggerConfiguration {
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -15,10 +15,6 @@ public class swaggerConfig {
                 .info(new Info()
                         .title("Greeting App API")
                         .version("1.0")
-                        .license(new License()
-                                .name("Apache 2.0")
-                                .url("http://springdoc.org")
-                        )
-                );
+                        .license(new License().name("Apache 2.0").url("http://springdoc.org")));
     }
 }

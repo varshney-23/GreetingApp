@@ -1,17 +1,15 @@
 package com.greetingapp.mygreetingapp.model;
 
-import com.greetingapp.mygreetingapp.dto.authUserDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.greetingapp.mygreetingapp.dto.AuthUserDTO;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Table(name = "authuser")
 @Data
 @NoArgsConstructor
 @Entity
-public class User {
+public class AuthUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
@@ -69,11 +67,11 @@ public class User {
         this.password = password;
     }
 
-    public User(authUserDTO userDTO) {
-        this.firstName=userDTO.getFirstName();
-        this.lastName=userDTO.getLastName();
-        this.email=userDTO.getEmail();
-        this.password=userDTO.getPassword();
+    public AuthUser(AuthUserDTO userDTO) {
+        this.firstName = userDTO.getFirstName();
+        this.lastName = userDTO.getLastName();
+        this.email = userDTO.getEmail();
+        this.password = userDTO.getPassword(); // Encrypt before saving
     }
 
 }
