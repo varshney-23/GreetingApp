@@ -11,4 +11,5 @@ public interface IAuthenticationService {
 
     String forgotPassword(String email, String newPassword);
 
+    String resetPassword(String email, String currentPassword, String newPassword);
 }
