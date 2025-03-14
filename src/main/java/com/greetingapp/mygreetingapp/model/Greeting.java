@@ -6,16 +6,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class greetingEntity {
+public class Greeting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String message;
 
-    public greetingEntity() {}
+    public Greeting() {}
 
-    public greetingEntity(String message) {
+    public Greeting(String message) {
         this.message = message;
     }
 

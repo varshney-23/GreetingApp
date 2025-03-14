@@ -1,54 +1,62 @@
 package com.greetingapp.mygreetingapp.controller;
 
-import com.greetingapp.mygreetingapp.model.greetingEntity;
-import com.greetingapp.mygreetingapp.service.greetingService;
+import com.greetingapp.mygreetingapp.exception.ResourceNotFoundException;
+import com.greetingapp.mygreetingapp.interfaces.IGreetingService;
+import com.greetingapp.mygreetingapp.model.Greeting;
+import com.greetingapp.mygreetingapp.service.GreetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/greetings")
 public class greetingController {
 
-    private final greetingService gs;
-
     @Autowired
-    public greetingController(greetingService gs) {
-        this.gs = gs;
+    IGreetingService greetingService;
+
+    public greetingController(GreetingService greetingService) {
+        this.greetingService = greetingService;
+    }
+
+    @GetMapping("/simple")
+    public String getSimpleGreeting() {
+        return greetingService.getSimpleGreeting();
     }
 
     @PostMapping("/save")
-    public greetingEntity saveGreeting(@RequestParam String message) {
-        return gs.saveGreeting(message);
-    }
-
-    @GetMapping("/{id}")
-    public Optional<greetingEntity> getGreetingById(@PathVariable Long id) {
-        return gs.getGreetingById(id);
+    public Greeting saveGreeting(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName) {
+        return greetingService.saveGreeting(firstName, lastName);
     }
 
     @GetMapping("/all")
-    public List<greetingEntity> getAllGreetings() {
-        return gs.getAllGreetings();
+    public ResponseEntity<List<Greeting>> getAllGreetings() {
+        List<Greeting> greetings = greetingService.getAllGreetings();
+        return ResponseEntity.ok(greetings);
     }
 
-    @GetMapping("/personalized")
-    public String getPersonalizedGreeting(@RequestParam(required = false) String firstName,
-                                          @RequestParam(required = false) String lastName) {
-        return gs.getPersonalizedGreeting(firstName, lastName);
+    @GetMapping("/{id}")
+    public ResponseEntity<Greeting> getGreetingById(@PathVariable Long id) {
+        return greetingService.getGreetingById(id)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new ResourceNotFoundException("Greeting not found with id " + id));
     }
 
-    @PutMapping("/{id}")
-    public greetingEntity updateGreeting(@PathVariable Long id, @RequestParam String newMessage) {
-        return gs.updateGreeting(id, newMessage);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Greeting> updateGreeting(
+            @PathVariable Long id, @RequestBody Greeting greetingDetails) {
+        Greeting updatedGreeting = greetingService.updateGreeting(id, greetingDetails.getMessage());
+        return ResponseEntity.ok(updatedGreeting);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteGreeting(@PathVariable Long id) {
-        gs.deleteGreeting(id);
+        greetingService.deleteGreeting(id);
         return ResponseEntity.ok("Greeting deleted successfully!");
     }
+
 }

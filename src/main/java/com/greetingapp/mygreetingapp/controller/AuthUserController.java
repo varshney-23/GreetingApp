@@ -1,8 +1,8 @@
 package com.greetingapp.mygreetingapp.controller;
 
 import com.greetingapp.mygreetingapp.dto.*;
+import com.greetingapp.mygreetingapp.interfaces.IAuthenticationService;
 import com.greetingapp.mygreetingapp.model.AuthUser;
-import com.greetingapp.mygreetingapp.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthUserController {
     @Autowired
-    AuthenticationService authenticationService;
+    IAuthenticationService authenticationService;
 
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO> register(@Valid @RequestBody AuthUserDTO userDTO) throws Exception{
