@@ -12,12 +12,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/greetings")
-public class greetingController {
+public class GreetingController {
 
     @Autowired
     IGreetingService greetingService;
 
-    public greetingController(GreetingService greetingService) {
+    public GreetingController(GreetingService greetingService) {
         this.greetingService = greetingService;
     }
 
