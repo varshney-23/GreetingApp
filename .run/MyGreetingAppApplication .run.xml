@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MyGreetingAppApplication " type="Application" factoryName="Application">
+    <envs>
+      <env name="username" value="root" />
+      <env name="password" value="ayushi" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.greetingapp.mygreetingapp.MyGreetingAppApplication" />
+    <module name="MyGreetingApp" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
